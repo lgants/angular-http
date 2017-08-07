@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+// Response object provides access to json method
+import { Response } from '@angular/http';
 
 import { ServerService } from './server.service';
 
@@ -8,6 +10,7 @@ import { ServerService } from './server.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+  appName = this.serverService.getAppName();
   servers = [
     {
       name: 'Testserver',
@@ -37,12 +40,20 @@ export class AppComponent {
     this.serverService.storeServers(this.servers)
       .subscribe(
         (response) => {
-
+          console.log(response);
         },
         (error) => {
-
+          console.log(error);
         }
       )
+  }
+
+  onGet() {
+    this.serverService.getServers()
+      .subscribe(
+        (servers: any[]) => this.servers = servers,
+        (error) => console.log(error)
+      );
   }
 
   private generateId() {
