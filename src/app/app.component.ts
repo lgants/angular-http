@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 
+import { ServerService } from './server.service';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -18,6 +20,9 @@ export class AppComponent {
       id: this.generateId()
     }
   ];
+
+  constructor(private serverService: ServerService){}
+
   onAddServer(name: string) {
     this.servers.push({
       name: name,
@@ -25,7 +30,23 @@ export class AppComponent {
       id: this.generateId()
     });
   }
+
+  onSave() {
+    // storeServers returns an observable; so need to subscribe
+    // not necessary to unsubscribe from this observable since it only gets one response
+    this.serverService.storeServers(this.servers)
+      .subscribe(
+        (response) => {
+
+        },
+        (error) => {
+
+        }
+      )
+  }
+
   private generateId() {
     return Math.round(Math.random() * 10000);
   }
+
 }
